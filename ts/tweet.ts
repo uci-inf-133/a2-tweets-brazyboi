@@ -33,7 +33,6 @@ class Tweet {
         return (words.slice(0, words.length - 2)).join(" ");
     }
 
-    //TODO: parse the activity type from the text of the tweet
     get activityType():string {
         if (this.source != 'completed_event') {
             return "unknown";
@@ -46,9 +45,14 @@ class Tweet {
         if(this.source != 'completed_event') {
             return 0;
         }
-        //TODO: prase the distance from the text of the tweet
         const words = this.text.split(" ");
-        return parseFloat(words[findFirstNumericValue(this.text)]);
+        const numericValIndex = findFirstNumericValue(this.text);
+        const num = parseFloat(words[numericValIndex]);
+        const unit = words[numericValIndex + 1];
+        if (unit == 'km') {
+            return num * 1.609;
+        }
+        return num;
     }
 
     getHTMLTableRow(rowNumber:number):string {
