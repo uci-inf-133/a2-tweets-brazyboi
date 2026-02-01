@@ -22,9 +22,9 @@ function renderTable() {
 	});
 
 	const written_tweets = tweet_array.filter(tweet => tweet.written);
+	const search = document.getElementById('textFilter').value;
 	const search_tweets = written_tweets.filter((tweet) => {
-		const search = document.getElementById('textFilter').value.toLowerCase();
-		return tweet.text.toLowerCase().includes(search);	
+		return tweet.text.includes(search);	
 	});
 
 	// Take the table rows and add them to the DOM element
@@ -52,6 +52,9 @@ function renderTable() {
 
     prev_button.disabled = (currentPage === 0);
     next_button.disabled = (end >= search_tweets.length);
+
+	document.getElementById('searchCount').innerText = search_tweets.length;
+	document.getElementById('searchText').innerText = search;
 }
 
 function addEventHandlerForSearch() {
