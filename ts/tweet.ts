@@ -57,7 +57,18 @@ class Tweet {
 
     getHTMLTableRow(rowNumber:number):string {
         //TODO: return a table row which summarizes the tweet with a clickable link to the RunKeeper activity
-        return "<tr>This </tr>";
+        const rowNum = "<td>" + rowNumber.toString() + "</td>";
+        const activityType = "<td>" + this.activityType + "</td>"; 
+
+        const firstLinkIndex = findFirstLink(this.text);
+        const words = this.text.split(' ');
+        const hyperlink = '<a href="' + words[firstLinkIndex] + '">' + ' ' + words[firstLinkIndex] + ' ' + '</a>';
+        const before = words.slice(0, firstLinkIndex).join(' ');
+        const after = words.slice(firstLinkIndex + 1).join(' ');
+        const tweetText = "<td>" + before + hyperlink + after + "</td>";
+        const result = "<tr>" + rowNum + activityType + tweetText + "</tr>"; 
+        
+        return result;
     }
 }
 
@@ -71,5 +82,15 @@ function findFirstNumericValue(text: string) {
         }
     }
 
+    return -1;
+}
+
+function findFirstLink(text: string) {
+    const words = text.split(" ");
+    for (let i = 0; i < words.length; ++i) {
+        if (words[i].startsWith("https://")) {
+            return i;
+        }
+    }
     return -1;
 }
