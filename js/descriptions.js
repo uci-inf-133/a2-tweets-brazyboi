@@ -23,9 +23,12 @@ function renderTable() {
 
 	const written_tweets = tweet_array.filter(tweet => tweet.written);
 	const search = document.getElementById('textFilter').value;
-	const search_tweets = written_tweets.filter((tweet) => {
+	let search_tweets = written_tweets.filter((tweet) => {
 		return tweet.text.includes(search);	
 	});
+	if (search === '') {
+		search_tweets = [];
+	}
 
 	// Take the table rows and add them to the DOM element
 	const table = document.getElementById('tweetTable');
@@ -45,7 +48,11 @@ function renderTable() {
     table.appendChild(fragment);
 
 	const pageStuff = document.getElementById('pageStuff');
-    pageStuff.innerText = `Page ${currentPage + 1} of ${Math.ceil(search_tweets.length / pageSize)}`;
+	const pageAmt = Math.ceil(search_tweets.length / pageSize);
+    pageStuff.innerText = `Page ${currentPage + 1} of ${pageAmt}`;
+	if (pageAmt === 0) {
+    	pageStuff.innerText = `Page ${currentPage} of ${pageAmt}`;
+	}
 
 	const next_button = document.getElementById('nextButton');	
 	const prev_button = document.getElementById('prevButton');	
